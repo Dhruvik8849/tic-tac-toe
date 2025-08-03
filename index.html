@@ -3,61 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe 2.0</title>
+    <title>Tic Tac Toe Universe</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Bungee+Spice&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Tic Tac Toe</h1>
-        <div class="menu">
-            <button id="music-toggle">🎵</button>
-            <button id="new-game">New Game</button>
-        </div>
-    </header>
 
-    <main class="game-area">
+    <div id="setup-popup">
+        <div class="popup-content">
+            <div class="aurora-background"></div>
+            <h1>Game Setup</h1>
+            
+            <div class="option-group">
+                <h2>1. Choose Mode</h2>
+                <div class="options">
+                    <button class="option-btn" data-type="mode" data-value="1-player">vs Dhruvik (CPU)</button>
+                    <button class="option-btn" data-type="mode" data-value="2-player">2 Player</button>
+                </div>
+            </div>
+
+            <div id="difficulty-group" class="option-group hidden">
+                <h2>2. Choose Difficulty</h2>
+                <div class="options">
+                    <button class="option-btn" data-type="difficulty" data-value="easy">Easy</button>
+                    <button class="option-btn" data-type="difficulty" data-value="hard">Hard</button>
+                </div>
+            </div>
+            
+            <div class="option-group">
+                <h2 id="grid-size-label">3. Choose Grid Size</h2>
+                <div class="options">
+                    <button class="option-btn" data-type="grid" data-value="3">3 x 3</button>
+                    <button class="option-btn" data-type="grid" data-value="5">5 x 5</button>
+                    <button class="option-btn" data-type="grid" data-value="7">7 x 7</button>
+                </div>
+            </div>
+
+            <button id="start-game-btn" disabled>Start Game</button>
+        </div>
+    </div>
+
+    <main class="game-area hidden">
+        <header>
+            <h1 id="game-title">Tic Tac Toe</h1>
+            <div class="menu">
+                <button id="music-toggle">🎵</button>
+                <button id="new-game-btn">New Game</button>
+            </div>
+        </header>
+
         <div class="scoreboard">
             <div class="score-card player-x">
-                <h2>Player X</h2>
+                <h2 id="player-x-label">Player X</h2>
                 <p id="score-x">0</p>
             </div>
             <div class="score-card player-o">
-                <h2>Player O</h2>
+                <h2 id="player-o-label">Player O</h2>
                 <p id="score-o">0</p>
             </div>
         </div>
 
         <div class="gameContainer">
-            <div class="container">
-                <div class="line"></div>
-                <div class="box" data-index="0"><span class="boxtext"></span></div>
-                <div class="box" data-index="1"><span class="boxtext"></span></div>
-                <div class="box" data-index="2"><span class="boxtext"></span></div>
-                <div class="box" data-index="3"><span class="boxtext"></span></div>
-                <div class="box" data-index="4"><span class="boxtext"></span></div>
-                <div class="box" data-index="5"><span class="boxtext"></span></div>
-                <div class="box" data-index="6"><span class="boxtext"></span></div>
-                <div class="box" data-index="7"><span class="boxtext"></span></div>
-                <div class="box" data-index="8"><span class="boxtext"></span></div>
-            </div>
+            <svg id="winning-line-svg" width="100%" height="100%"></svg>
+            <div class="container"></div>
         </div>
         
         <div class="gameInfo">
             <h2 class="info">Turn for X</h2>
-            <button id="reset">Next Round</button>
         </div>
     </main>
 
     <div id="result-popup" class="hidden">
         <div class="popup-content">
+            <div class="aurora-background"></div>
             <h2 id="result-message"></h2>
             <div class="imgbox">
                 <img src="excited.gif" alt="celebration">
             </div>
-            <button id="play-again">Play Again</button>
+            <div class="result-buttons">
+                <button id="play-again-btn">Play Again</button>
+                <button id="change-settings-btn">Change Settings</button>
+            </div>
         </div>
     </div>
 
