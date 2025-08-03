@@ -1,118 +1,226 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2&family=Roboto&display=swap');
-*{
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Bungee+Spice&display=swap');
+
+:root {
+    --bg-color: #1a1a2e;
+    --primary-color: #16213e;
+    --secondary-color: #0f3460;
+    --accent-color: #e94560;
+    --text-color: #ffffff;
+    --line-color: #fca311;
+    --font-main: 'Poppins', sans-serif;
+    --font-title: 'Bungee Spice', cursive;
+}
+
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-nav{
-    background-color: rgb(37, 9, 37);
-    color: white;
-    height: 65px;
-    font-size: 27px;
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    text-align: center;
+}
+
+header {
+    background-color: var(--primary-color);
+    padding: 1rem 2rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 0 12px;
-    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-nav ul{
-    list-style-type: none;
+header h1 {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    color: var(--accent-color);
 }
 
-.gameContainer{ 
+.menu button {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.menu button:hover {
+    background-color: #ff6384;
+}
+
+#music-toggle {
+    background-color: var(--secondary-color);
+}
+
+.game-area {
     display: flex;
-    justify-content: center;
-    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
 }
 
-.container{
-    display: grid;
-    grid-template-rows: repeat(3, 10vw);
-    grid-template-columns: repeat(3, 10vw);
-    font-family: 'Roboto', sans-serif;
+.scoreboard {
+    display: flex;
+    gap: 2rem;
+}
+
+.score-card {
+    background-color: var(--primary-color);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.score-card h2 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.score-card p {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.gameContainer {
     position: relative;
 }
 
-.box{
-    border: 2px solid black;
-    font-size: 8vw;
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 10vmin);
+    grid-template-rows: repeat(3, 10vmin);
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 1vmin;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.box {
+    border: 2px solid var(--bg-color);
+    font-size: 8vmin;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: background-color 0.3s ease;
 }
 
-.box:hover{
-    background-color: rgb(242, 234, 250);
+.box:hover {
+    background-color: var(--primary-color);
+}
+
+.boxtext {
+    color: var(--text-color);
+    animation: appear 0.3s ease-in-out;
+}
+
+@keyframes appear {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.line {
+    background-color: var(--line-color);
+    height: 5px;
+    width: 0;
+    position: absolute;
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
+}
+
+.gameInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .info {
-    font-size: 22px;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-.gameInfo{
-    padding: 0 34px;
-    font-family: 'Baloo Bhaina 2', cursive;
-}
-
-.gameInfo h1{
-    font-size: 2.5rem;
-}
-
-.imgbox img{
-    width: 0;
-    transition: width 1s ease-in-out;
-}
-
-.br-0{
-    border-right: 0;
-}
-
-.bl-0{
-    border-left: 0;
-}
-
-.bt-0{
-    border-top: 0;
-}
-
-.bb-0{
-    border-bottom: 0;
-}
-
-#reset {
-    margin: 0 23px;
-    padding: 1px 18px;
-    background: #f3e7f9;
-    border-radius: 6px;
+#reset, #new-game, #play-again {
+    padding: 0.75rem 1.5rem;
+    background: var(--accent-color);
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
-    font-family: 'Baloo Bhaina 2';
-    font-size: 15px;
+    font-family: var(--font-main);
+    font-size: 1rem;
     font-weight: bolder;
+    color: var(--text-color);
+    transition: transform 0.2s ease;
 }
 
-.line{
-    background-color: black;
-    height: 3px;
+#reset:hover, #new-game:hover, #play-again:hover {
+    transform: scale(1.05);
+}
+
+/* Popup styles */
+#result-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+}
+
+#result-popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: var(--primary-color);
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+#result-message {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.imgbox {
+    margin: 1rem 0;
+}
+
+.imgbox img {
     width: 0;
-    position: absolute;
-    background-color: #911d91;
-    transition: width 1s ease-in-out;
+    transition: width 0.5s ease-in-out;
 }
 
-@media screen and (max-width: 950px)
-{
-    .gameContainer{
-        flex-wrap: wrap;
+/* For smaller screens */
+@media screen and (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    .scoreboard { flex-direction: column; gap: 1rem; }
+    .container {
+        grid-template-columns: repeat(3, 20vmin);
+        grid-template-rows: repeat(3, 20vmin);
     }
-    .gameInfo{
-        margin-top: 34px;
-    }
-    .gameInfo h1{
-        font-size: 1.5rem;
-    }
-    .container { 
-        grid-template-rows: repeat(3, 20vw);
-        grid-template-columns: repeat(3, 20vw);
-    }
+    .box { font-size: 15vmin; }
 }
