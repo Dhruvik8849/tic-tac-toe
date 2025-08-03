@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Audio Elements
     const bgMusic = document.getElementById("bg-music");
-    // Turn sound is no longer needed but we keep the gameover sound
     const gameoverSound = document.getElementById("gameover-sound");
     bgMusic.volume = 0.1;
 
@@ -47,10 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return turn === "X" ? "O" : "X";
     };
 
-    const showPopup = (message, isWin) => {
+    const endGame = (message, isWin) => {
+        isGameOver = true;
         resultMessage.innerText = message;
-        
-        // Vibrate the phone on game over
+
+        // Vibrate the phone on game over, if supported
         if ("vibrate" in navigator) {
             navigator.vibrate(500); // Vibrate for 500 milliseconds
         }
@@ -58,9 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isWin) {
             celebrationImg.style.width = "150px";
             gameoverSound.play();
-        } else {
-            celebrationImg.style.width = "0px";
         }
+        
         resultPopup.classList.remove("hidden");
     };
 
@@ -73,8 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 boxtexts[e[0]].innerText !== ""
             ) {
                 const winner = boxtexts[e[0]].innerText;
-                showPopup(`${winner} Won! 🎉`, true);
-                isGameOver = true;
+                endGame(`${winner} Won! 🎉`, true);
                 
                 const containerWidth = document.querySelector('.container').offsetWidth;
                 const scaleFactor = containerWidth / (30 * 3.77); 
@@ -90,8 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const checkDraw = () => {
         if (moveCount === 9 && !isGameOver) {
-            isGameOver = true;
-            showPopup("It's a Draw! 🤝", false);
+            endGame("It's a Draw! 🤝", false);
         }
     };
 
@@ -116,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     boxes.forEach(element => {
         element.addEventListener('click', () => {
             if (!firstMoveMade && !isMusicPlaying) {
-                bgMusic.play();
+                bgMusic.play().catch(() => console.log("User must interact with the document first."));
                 isMusicPlaying = true;
                 musicToggleBtn.innerText = "🔇";
                 firstMoveMade = true;
@@ -124,9 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const boxtext = element.querySelector('.boxtext');
             if (boxtext.innerText === '' && !isGameOver) {
-                
-                // All turn sound logic has been removed from here.
-
                 boxtext.innerText = turn;
                 moveCount++;
                 checkWin();
@@ -155,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bgMusic.pause();
             musicToggleBtn.innerText = "🎵";
         } else {
-            bgMusic.play();
+            bgMusic.play().catch(() => console.log("User must interact with the document first."));
             musicToggleBtn.innerText = "🔇";
         }
         isMusicPlaying = !isMusicPlaying;
