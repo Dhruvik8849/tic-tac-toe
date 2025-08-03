@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Audio Elements
     const bgMusic = document.getElementById("bg-music");
-    const turnSound = document.getElementById("turn-sound");
+    // Turn sound is no longer needed but we keep the gameover sound
     const gameoverSound = document.getElementById("gameover-sound");
-    bgMusic.volume = 0.1; // Set a pleasant volume
+    bgMusic.volume = 0.1;
 
     // --- Game State ---
     let turn = "X";
@@ -29,16 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let moveCount = 0;
     let scores = { X: 0, O: 0 };
     let isMusicPlaying = false;
+    let firstMoveMade = false;
 
     const winConditions = [
-        [0, 1, 2, 5, 5, 0],    // H-1
-        [3, 4, 5, 5, 15, 0],   // H-2
-        [6, 7, 8, 5, 25, 0],   // H-3
-        [0, 3, 6, -5, 15, 90], // V-1
-        [1, 4, 7, 5, 15, 90],  // V-2
-        [2, 5, 8, 15, 15, 90], // V-3
-        [0, 4, 8, 5, 15, 45],  // Diag-1
-        [2, 4, 6, 5, 15, 135], // Diag-2
+        [0, 1, 2, 5, 5, 0],
+        [3, 4, 5, 5, 15, 0],
+        [6, 7, 8, 5, 25, 0],
+        [0, 3, 6, -5, 15, 90],
+        [1, 4, 7, 5, 15, 90],
+        [2, 5, 8, 15, 15, 90],
+        [0, 4, 8, 5, 15, 45],
+        [2, 4, 6, 5, 15, 135],
     ];
 
     // --- Functions ---
@@ -48,6 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showPopup = (message, isWin) => {
         resultMessage.innerText = message;
+        
+        // Vibrate the phone on game over
+        if ("vibrate" in navigator) {
+            navigator.vibrate(500); // Vibrate for 500 milliseconds
+        }
+
         if (isWin) {
             celebrationImg.style.width = "150px";
             gameoverSound.play();
@@ -69,13 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 showPopup(`${winner} Won! 🎉`, true);
                 isGameOver = true;
                 
-                // Adjust line for different screen sizes
                 const containerWidth = document.querySelector('.container').offsetWidth;
-                const scaleFactor = containerWidth / (30 * 3.77); // 30vw in pixels approx
+                const scaleFactor = containerWidth / (30 * 3.77); 
                 line.style.width = "28vmin";
                 line.style.transform = `translate(${e[3] * scaleFactor}vmin, ${e[4] * scaleFactor}vmin) rotate(${e[5]}deg)`;
                 
-                // Update score
                 scores[winner]++;
                 updateScoreboard();
                 return;
@@ -110,11 +115,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners ---
     boxes.forEach(element => {
         element.addEventListener('click', () => {
+            if (!firstMoveMade && !isMusicPlaying) {
+                bgMusic.play();
+                isMusicPlaying = true;
+                musicToggleBtn.innerText = "🔇";
+                firstMoveMade = true;
+            }
+
             const boxtext = element.querySelector('.boxtext');
             if (boxtext.innerText === '' && !isGameOver) {
+                
+                // All turn sound logic has been removed from here.
+
                 boxtext.innerText = turn;
                 moveCount++;
-                turnSound.play();
                 checkWin();
                 if (!isGameOver) {
                     checkDraw();
@@ -127,18 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Reset for next round
     resetBtn.addEventListener('click', resetBoard);
     playAgainBtn.addEventListener('click', resetBoard);
 
-    // New Game (resets scores)
     newGameBtn.addEventListener('click', () => {
         scores = { X: 0, O: 0 };
         updateScoreboard();
         resetBoard();
     });
 
-    // Music Toggle
     musicToggleBtn.addEventListener('click', () => {
         if (isMusicPlaying) {
             bgMusic.pause();
@@ -148,5 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             musicToggleBtn.innerText = "🔇";
         }
         isMusicPlaying = !isMusicPlaying;
+        firstMoveMade = true;
     });
 });
